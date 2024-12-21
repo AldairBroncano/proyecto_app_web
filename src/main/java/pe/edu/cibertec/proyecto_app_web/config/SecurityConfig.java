@@ -51,10 +51,12 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(autorizar -> autorizar
                 // .requestMatchers("personas/nueva").denyAll()
+                .requestMatchers("productos/nueva", "pedido/eliminar").hasRole("ADMIN")
                 .requestMatchers("personas/nueva", "pedido/eliminar").hasRole("ADMIN")
                 .requestMatchers("pedido/editar").hasAnyRole("ADMIN", "VENDEDOR")
                 .anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
+
 }
