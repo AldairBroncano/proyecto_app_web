@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.AllArgsConstructor;
 import pe.edu.cibertec.proyecto_app_web.entities.Pedido;
+import pe.edu.cibertec.proyecto_app_web.entities.Producto;
 import pe.edu.cibertec.proyecto_app_web.repository.PedidoRepository;
 import pe.edu.cibertec.proyecto_app_web.repository.PersonaRepository;
 import pe.edu.cibertec.proyecto_app_web.repository.ProductoRepository;
@@ -40,9 +41,16 @@ public class PedidoController {
 
     @PostMapping("/nuevo")
     public String create(@ModelAttribute Pedido pedido) {
-        // Guardar el pedido en la base de datos
+        Producto producto = productoRepository.findById(pedido.getProducto().getId())
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        if (producto.getStock() < pedido.getCantidad()) {
+            // Manejo de error (redireccionar o mostrar mensaje en la vista)
+            return "pedido/create";
+        }
+        producto.setStock(producto.getStock() - pedido.getCantidad());
+        productoRepository.save(producto);
         pedidoRepository.save(pedido);
-        return "redirect:/pedidos"; // Redirigir a la lista de pedidos después de guardar
+        return "redirect:/pedidos";
     }
 
     @PostMapping("eliminar/{id}")
