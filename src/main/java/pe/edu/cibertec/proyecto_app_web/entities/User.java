@@ -19,7 +19,9 @@ import lombok.Setter;
 public class User implements UserDetails {// opcional extends DomainObject
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     Long id;
+    @Setter
     String name;
     @Setter
     String password;

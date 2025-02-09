@@ -6,12 +6,10 @@
     <title>Mi Biblioteca</title>
     <link rel="icon" href="/img/icon/open-book.png" type="image/x-icon">
 
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+
     <style>
-        main {
-            text-align: center;
-            position: relative;
-        }
+       
         .portada {
             width: 100%;
             height: auto;
@@ -29,53 +27,15 @@
             padding: 1rem;
             border-radius: 10px;
         }
-        /* Estilos para el nav */
-        nav {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: rgb(233, 233, 233);
-            font-size: 1rem;
-        }
-        /* Dropdown para el botón user */
-        .dropdown {
-            position: absolute;
-            right: 95px; /* Ajuste a la derecha */
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 120px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropbtn img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%; /* Hace que la imagen sea circular */
-            cursor: pointer;
-        }
+        
+        main {
+    padding: 2rem;
+    text-align: center;
+}
+
+     
+        
+       
     </style>
 </head>
 <body>
@@ -88,13 +48,21 @@
         <a href="/personas">Personas</a>
         <a href="/productos">Añadir Libros</a>
         <a href="/pedidos">Añadir pedido</a>
+        <div>
+            <h2  th:if="${session.nombreUsuario != null}" th:text="'Hola, ' + ${session.nombreUsuario} + '!'" class="usuario-saludo"></h2>
+
+    <!-- Otras opciones de menú aquí -->
+</div>
+
         <!-- Botón con imagen para desplegar opciones -->
         <div class="dropdown">
             <button class="dropbtn"><img src="/img/icon/user.png" alt="Usuario"></button>
             <div class="dropdown-content">
-                <a href="/signup">Registrar Usuario</a>
-                <a href="/login">Iniciar Sesión</a>
-                <a href="/logout">Logout</a>
+                <a th:if="${session.nombreUsuario == null}" href="/signup">Registrar Usuario</a>
+                <a th:if="${session.nombreUsuario == null}" href="/login">Iniciar Sesión</a>
+
+                <!-- Mostrar "Logout" solo si el usuario ha iniciado sesión -->
+                <a th:if="${session.nombreUsuario != null}" href="/logout">Logout</a>
             </div>
         </div>
     </nav>

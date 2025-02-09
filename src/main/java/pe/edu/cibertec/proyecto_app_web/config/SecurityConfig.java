@@ -53,9 +53,18 @@ public class SecurityConfig {
                 // .requestMatchers("personas/nueva").denyAll()
                 .requestMatchers("productos/nueva", "pedido/eliminar").hasRole("ADMIN")
                 .requestMatchers("personas/nueva", "pedido/eliminar").hasRole("ADMIN")
+                .requestMatchers("pedidos/nuevo", "pedido/eliminar").hasRole("ADMIN")
                 .requestMatchers("pedido/editar").hasAnyRole("ADMIN", "VENDEDOR")
                 .anyRequest().permitAll())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(login -> login
+
+                        .defaultSuccessUrl("/login-success", true) // Redirige al método que guarda el nombre en sesión
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .permitAll())
                 .build();
     }
 

@@ -40,11 +40,13 @@ public class PedidoController {
     }
 
     @PostMapping("/nuevo")
-    public String create(@ModelAttribute Pedido pedido) {
+    public String create(@ModelAttribute Pedido pedido, Model model) {
         Producto producto = productoRepository.findById(pedido.getProducto().getId())
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         if (producto.getStock() < pedido.getCantidad()) {
             // Manejo de error (redireccionar o mostrar mensaje en la vista)
+            model.addAttribute("error", "La cantidad solicitada supera el stock disponible.");
+
             return "pedido/create";
         }
         producto.setStock(producto.getStock() - pedido.getCantidad());

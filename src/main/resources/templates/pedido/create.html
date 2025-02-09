@@ -12,7 +12,9 @@
         </a>
         <h1>Nuevo Pedido</h1>
     </header>
-
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
     <!-- Contenedor del formulario centrado -->
     <div class="d-flex justify-content-center align-items-start mt-5" style="height: calc(100vh - 150px);">
         <form method="post" th:action="@{/pedidos/nuevo}" th:object="${pedido}" class="w-50 p-4 border rounded shadow">
@@ -45,7 +47,8 @@
             <button type="submit" class="btn btn-primary w-100">Crear Pedido</button>
         </form>
     </div>
-
+    
+    
     <footer class="text-center py-3 bg-dark text-white">
         &copy; <span th:text="${año}"></span> Mi Biblioteca Virtual. Todos los derechos reservados.
     </footer>
