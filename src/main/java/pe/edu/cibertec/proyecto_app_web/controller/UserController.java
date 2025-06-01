@@ -25,23 +25,43 @@ public class UserController {
         return "user/signup";
     }
 
-    @PostMapping("signup")
-    public String signUp(User user) {
+ @PostMapping("signup")
+public String signUp(User user) {
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return "redirect:/";
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+    // Asignar un rol por defecto si no se indicó
+    if (user.getRole() == null || user.getRole().isEmpty()) {
+        user.setRole("USER"); // También podrías usar "ADMIN" si es un admin
     }
 
-    @GetMapping("/login-success")
-    public String loginSuccess(HttpSession session) {
-        // Obtiene el usuario autenticado con Spring Security
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    userRepository.save(user);
+    return "redirect:/";
+}
 
-        // Guarda el nombre en la sesión para mostrarlo en la página principal
-        session.setAttribute("nombreUsuario", username);
 
-        return "redirect:/"; // Redirige a la página de inicio
+
+
+@GetMapping("/login-success")
+public String loginSuccess(HttpSession session) {
+    var auth = SecurityContextHolder.getContext().getAuthentication();
+    String username = auth.getName();
+
+    session.setAttribute("nombreUsuario", username);
+
+    boolean isAdmin = auth.getAuthorities().stream()
+        .anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
+    boolean isUser = auth.getAuthorities().stream()
+        .anyMatch(role -> role.getAuthority().equals("ROLE_USER"));
+
+    if (isAdmin) {
+        session.setAttribute("rol", "ADMIN");
+    } else if (isUser) {
+        session.setAttribute("rol", "USER");
     }
+
+    return "redirect:/";
+}
+
 
 }

@@ -2,7 +2,9 @@ package pe.edu.cibertec.proyecto_app_web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -14,58 +16,48 @@ import pe.edu.cibertec.proyecto_app_web.service.MiPropioUserDetailsService;
 
 @Configuration
 public class SecurityConfig {
-    // Autenticacion 2 cosas
 
-    // usuario y el password
-
-    // 1 tu password que algoritmo usaras
+    // Codificador de contraseñas (bcrypt por defecto)
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // return new BCryptPasswordEncoder();
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // 2 una forma de obtener los datos de un usuario
-    // @Bean
-    // UserDetailsService userDetailsService(UserRepository userRepository) {
-    // return new MiPropioUserDetailsService(userRepository);
-    // // System.out.println("Codificando:" + passwordEncoder.encode("123456"));
-
-    // // // en memoria, en jdbc (bd)
-    // // List<UserDetails> users = List.of(
-    // // new User("arthur", passwordEncoder.encode("123456"), List.of()),
-    // // new User("diana", passwordEncoder.encode("719312"), List.of())
-    // // );
-
-    // // return new InMemoryUserDetailsManager(users);
-    // }
-
-    // @Bean
-    // public PersonaController personaController(PersonaRepository
-    // personaRepository) {
-    // return new PersonaController(personaRepository);
-    // }
-
-    // Authorization
+    // Servicio para cargar datos del usuario desde la BD
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(autorizar -> autorizar
-                // .requestMatchers("personas/nueva").denyAll()
-                .requestMatchers("productos/nueva", "pedido/eliminar").hasRole("ADMIN")
-                .requestMatchers("personas/nueva", "pedido/eliminar").hasRole("ADMIN")
-                .requestMatchers("pedidos/nuevo", "pedido/eliminar").hasRole("ADMIN")
-                .requestMatchers("pedido/editar").hasAnyRole("ADMIN", "VENDEDOR")
-                .anyRequest().permitAll())
-                .formLogin(login -> login
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return new MiPropioUserDetailsService(userRepository);
+    }
 
-                        .defaultSuccessUrl("/login-success", true) // Redirige al método que guarda el nombre en sesión
-                        .permitAll())
+    // Proveedor de autenticación que usa el userDetailsService y el encoder
+    @Bean
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    // Configuración de seguridad HTTP
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("productos/nueva", "personas/nueva", "pedidos/nuevo", "pedido/eliminar").hasRole("ADMIN")
+                        .requestMatchers("pedido/editar").hasAnyRole("ADMIN", "USER")
+                        .anyRequest().permitAll()
+                )
+                .formLogin(form -> form
+                    //    .loginPage("/login") // si tienes una página personalizada
+                        .defaultSuccessUrl("/login-success", true)
+                        .permitAll()
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
-                        .permitAll())
+                        .permitAll()
+                )
                 .build();
     }
-
 }

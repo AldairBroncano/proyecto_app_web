@@ -25,10 +25,12 @@ public class User implements UserDetails {// opcional extends DomainObject
     String name;
     @Setter
     String password;
+    @Setter
+   private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.toLowerCase()));
     }
 
     @Override
@@ -39,6 +41,27 @@ public class User implements UserDetails {// opcional extends DomainObject
     @Override
     public String getUsername() {
         return this.name;
+    }
+
+    // Puedes implementar estos como true si no los necesitas personalizar
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

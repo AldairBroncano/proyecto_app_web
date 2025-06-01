@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import pe.edu.cibertec.proyecto_app_web.entities.User;
@@ -15,7 +14,7 @@ import pe.edu.cibertec.proyecto_app_web.repository.UserRepository;
 @Service
 public class MiPropioUserDetailsService implements UserDetailsService {
 
-    UserRepository userRepository;
+  private final UserRepository userRepository;
 
     public MiPropioUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
