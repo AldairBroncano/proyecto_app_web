@@ -15,12 +15,12 @@ public class UserInitializer {
     private UserRepository userRepository;
 @Autowired
     private PasswordEncoder passwordEncoder;
-
 @PostConstruct
-    public void init(){
+public void init() {
+    System.out.println("✅ Ejecutando init...");
 
-
-if (userRepository.findByName("admin") == null) {
+    try {
+        if (userRepository.findByName("admin").isEmpty()) {
             User admin = new User();
             admin.setName("admin");
             admin.setPassword(passwordEncoder.encode("admin123"));
@@ -28,16 +28,18 @@ if (userRepository.findByName("admin") == null) {
             userRepository.save(admin);
         }
 
-        if (userRepository.findByName("usuario") == null) {
+        if (userRepository.findByName("usuario").isEmpty()) {
             User user = new User();
             user.setName("usuario");
             user.setPassword(passwordEncoder.encode("user123"));
             user.setRole("USER");
             userRepository.save(user);
         }
-
-
+    } catch (Exception e) {
+        System.out.println("❌ ERROR en init(): " + e.getMessage());
+        e.printStackTrace();
     }
+}
 
 
 }

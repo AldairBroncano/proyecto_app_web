@@ -44,7 +44,8 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("productos/nueva", "personas/nueva", "pedidos/nuevo", "pedido/eliminar").hasRole("ADMIN")
-                        .requestMatchers("pedido/editar").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("pedido/","personas/eliminar").hasAnyRole("ADMIN")
+                      //  .requestMatchers("").hasAnyRole( "USER")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
