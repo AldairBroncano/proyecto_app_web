@@ -19,7 +19,7 @@ public class Pedido extends DomainObject {
 
     @Setter
     @ManyToOne
-    private Persona persona; // La persona que realiza el pedido
+    private Cliente cliente; // La Cliente que realiza el pedido
 
     @Setter
     @ManyToOne
@@ -32,8 +32,8 @@ public class Pedido extends DomainObject {
     public Pedido() {
     }
 
-    public Pedido(Persona persona, Producto producto, Integer cantidad) {
-        this.persona = persona;
+    public Pedido(Cliente cliente, Producto producto, Integer cantidad) {
+        this.cliente = cliente;
         this.producto = producto;
         this.cantidad = cantidad;
 

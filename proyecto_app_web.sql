@@ -1,14 +1,22 @@
 CREATE DATABASE proyecto_app_web;
 
+drop database proyecto_app_web;
 use proyecto_app_web;
 
 select * from persona;
 select * from producto;
 select * from pedido;
-select * from user;
+select * from usuario;
+
+
+drop table user;
+
+DELETE FROM `user` WHERE name = 'aldair';
 
 
 
+insert into user(name, password,role) values
+("aldair", "123", "ADMIN");
 
 insert into producto (nombre, autor, precio_unitario, stock, fecha_creacion) values
 ("Travesuras de la niña mala", "Mario Vargas Llosa", 100, 20, CURRENT_DATE),

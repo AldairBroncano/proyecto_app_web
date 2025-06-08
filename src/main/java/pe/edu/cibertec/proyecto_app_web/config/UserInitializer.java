@@ -20,10 +20,10 @@ public void init() {
     System.out.println("✅ Ejecutando init...");
 
     try {
-        if (userRepository.findByName("admin").isEmpty()) {
+        if (userRepository.findByName("aldair").isEmpty()) {
             User admin = new User();
-            admin.setName("admin");
-            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setName("aldair");
+            admin.setPassword(passwordEncoder.encode("prodigio"));
             admin.setRole("ADMIN");
             userRepository.save(admin);
         }

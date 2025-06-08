@@ -23,7 +23,9 @@
       <h1>Bienvenido a Mi Biblioteca Virtual</h1>
     </header>
     <br />
-    <a href="personas/nueva" class="btn btn-primary">Registrar Persona</a>
+    <a th:href="@{/clientes/nuevo}" class="btn btn-primary"
+      >Registrar Persona</a
+    >
     <br />
 
     <table class="table">
@@ -34,16 +36,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr th:each="persona: ${listaPersonas}">
-          <td th:text="${persona.nombre}"></td>
-          <td th:text="${persona.apellido}"></td>
+        <tr th:each="cliente: ${listaClientes}">
+          <td th:text="${cliente.nombre}"></td>
+          <td th:text="${cliente.apellido}"></td>
           <td>
-            <a th:href="@{/personas/{id}(id=${persona.id})}">Editar</a>
+            <a th:href="@{/clientes/{id}(id=${cliente.id})}">Editar</a>
           </td>
           <td>
             <form
               method="post"
-              th:action="@{/personas/eliminar/{id}(id=${persona.id})}"
+              th:action="@{/clientes/eliminar/{id}(id=${cliente.id})}"
             >
               <button type="submit" class="btn btn-primary">Eliminar</button>
             </form>

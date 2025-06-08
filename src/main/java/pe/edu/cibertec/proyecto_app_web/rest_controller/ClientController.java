@@ -1,7 +1,7 @@
 package pe.edu.cibertec.proyecto_app_web.rest_controller;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,29 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import pe.edu.cibertec.proyecto_app_web.entities.Persona;
-import pe.edu.cibertec.proyecto_app_web.repository.PersonaRepository;
+import pe.edu.cibertec.proyecto_app_web.entities.Cliente;
+import pe.edu.cibertec.proyecto_app_web.repository.ClienteRepository;
 
 @RestController
-@RequestMapping("api/personas")
+@RequestMapping("api/clientes")
 @AllArgsConstructor
-public class PersonController {
+public class ClientController {
     // CRUD
-    PersonaRepository personaRepository;
+    ClienteRepository clienteRepository;
 
     @GetMapping
-    public List<Persona> list() {
-        return personaRepository.findAll();
+    public List<Cliente> list() {
+        return clienteRepository.findAll();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Persona> findById(@PathVariable Long id) {
-        return ResponseEntity.of(personaRepository.findById(id));
+    public ResponseEntity<Cliente> findById(@PathVariable Long id) {
+        return ResponseEntity.of(clienteRepository.findById(id));
     }
 
     @PostMapping
-    public Persona register(@RequestBody Persona persona) {
-        return personaRepository.save(persona);
+    public Cliente register(@RequestBody Cliente cliente) {
+        return clienteRepository.save(cliente);
     }
 
 }

@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import pe.edu.cibertec.proyecto_app_web.entities.Pedido;
 import pe.edu.cibertec.proyecto_app_web.entities.Producto;
 import pe.edu.cibertec.proyecto_app_web.repository.PedidoRepository;
-import pe.edu.cibertec.proyecto_app_web.repository.PersonaRepository;
+import pe.edu.cibertec.proyecto_app_web.repository.ClienteRepository;
 import pe.edu.cibertec.proyecto_app_web.repository.ProductoRepository;
 
 @Controller
@@ -21,7 +21,7 @@ import pe.edu.cibertec.proyecto_app_web.repository.ProductoRepository;
 public class PedidoController {
 
     PedidoRepository pedidoRepository;
-    PersonaRepository personaRepository;
+    ClienteRepository clienteRepository;
     ProductoRepository productoRepository;
 
     @GetMapping
@@ -32,23 +32,24 @@ public class PedidoController {
 
     @GetMapping("/nuevo")
     public String showFormCreate(Model model) {
-        // Agregar al modelo las listas de personas y productos
         model.addAttribute("pedido", new Pedido());
-        model.addAttribute("personas", personaRepository.findAll()); // Lista de personas
+        model.addAttribute("clientes", clienteRepository.findAll()); // Lista de clientes
         model.addAttribute("productos", productoRepository.findAll()); // Lista de productos
-        return "pedido/create"; // Nombre de la vista (pedido/create.html)
+        return "pedido/create";
     }
 
     @PostMapping("/nuevo")
     public String create(@ModelAttribute Pedido pedido, Model model) {
         Producto producto = productoRepository.findById(pedido.getProducto().getId())
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        if (producto.getStock() < pedido.getCantidad()) {
-            // Manejo de error (redireccionar o mostrar mensaje en la vista)
-            model.addAttribute("error", "La cantidad solicitada supera el stock disponible.");
 
+        if (producto.getStock() < pedido.getCantidad()) {
+            model.addAttribute("error", "La cantidad solicitada supera el stock disponible.");
+            model.addAttribute("clientes", clienteRepository.findAll());
+            model.addAttribute("productos", productoRepository.findAll());
             return "pedido/create";
         }
+
         producto.setStock(producto.getStock() - pedido.getCantidad());
         productoRepository.save(producto);
         pedidoRepository.save(pedido);
@@ -65,7 +66,7 @@ public class PedidoController {
     public String showFormEdit(@PathVariable Long id, Model model) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow();
         model.addAttribute("pedido", pedido);
-        model.addAttribute("personas", personaRepository.findAll());
+        model.addAttribute("clientes", clienteRepository.findAll());
         model.addAttribute("productos", productoRepository.findAll());
         return "pedido/edit";
     }
@@ -73,7 +74,7 @@ public class PedidoController {
     @PostMapping("{id}")
     public String edit(@PathVariable Long id, Pedido pedido) {
         Pedido pedidoBd = pedidoRepository.findById(id).orElseThrow();
-        pedidoBd.setPersona(pedido.getPersona());
+        pedidoBd.setCliente(pedido.getCliente());
         pedidoBd.setProducto(pedido.getProducto());
         pedidoBd.setCantidad(pedido.getCantidad());
 

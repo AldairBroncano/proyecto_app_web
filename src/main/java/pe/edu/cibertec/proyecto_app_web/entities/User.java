@@ -11,11 +11,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Setter;
 
 @Entity
 @Data
+@Table(name="usuario")
 public class User implements UserDetails {// opcional extends DomainObject
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +28,7 @@ public class User implements UserDetails {// opcional extends DomainObject
     @Setter
     String password;
     @Setter
-   private String role;
+    private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

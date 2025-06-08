@@ -1,54 +1,96 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Nuevo Pedido</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
     <header class="text-center py-3">
-        <a href="/" style="text-decoration: none; color: inherit;">
-            <img src="/img/icon/open-book.png" alt="Icono de libro" style="width: 50px;">
-        </a>
-        <h1>Nuevo Pedido</h1>
+      <a href="/" style="text-decoration: none; color: inherit">
+        <img
+          src="/img/icon/open-book.png"
+          alt="Icono de libro"
+          style="width: 50px"
+        />
+      </a>
+      <h1>Nuevo Pedido</h1>
     </header>
 
     <!-- Contenedor del formulario centrado -->
-    <div class="d-flex justify-content-center align-items-start mt-5" style="height: calc(100vh - 150px);">
-        <form method="post" th:object="${pedido}" th:action="@{/pedidos/{id}(id=${pedido.id})}" class="w-50 p-4 border rounded shadow">
-            <h2 class="text-center mb-4">Editar Pedido</h2>
-            
-            <!-- Dropdown para seleccionar Cliente -->
-            <div class="mb-3">
-                <label for="cliente" class="form-label">Cliente</label>
-                <select id="cliente" th:field="*{persona}" class="form-control" required>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                    <option th:each="persona : ${personas}" th:value="${persona.id}" th:text="${persona.nombre} + ' ' + ${persona.apellido}"></option>
-                </select>
-            </div>
-            
-            <!-- Dropdown para seleccionar Producto -->
-            <div class="mb-3">
-                <label for="producto" class="form-label">Producto</label>
-                <select id="producto" th:field="*{producto}" class="form-control" required>
-                    <option value="" disabled selected>Seleccione un producto</option>
-                    <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.nombre}"></option>
-                </select>
-            </div>
-            
-            <!-- Campo para ingresar Cantidad -->
-            <div class="mb-3">
-                <label for="cantidad" class="form-label">Cantidad</label>
-                <input type="number" id="cantidad" th:field="*{cantidad}" class="form-control" placeholder="Cantidad" required>
-            </div>
-            
-            <button type="submit" class="btn btn-primary w-100">Editar Pedido</button>
-        </form>
+    <div
+      class="d-flex justify-content-center align-items-start mt-5"
+      style="height: calc(100vh - 150px)"
+    >
+      <form
+        method="post"
+        th:object="${pedido}"
+        th:action="@{/pedidos/{id}(id=${pedido.id})}"
+        class="w-50 p-4 border rounded shadow"
+      >
+        <h2 class="text-center mb-4">Editar Pedido</h2>
+
+        <!-- Dropdown para seleccionar Cliente -->
+        <div class="mb-3">
+          <label for="cliente" class="form-label">Cliente</label>
+          <select
+            id="cliente"
+            th:field="*{cliente}"
+            class="form-control"
+            required
+          >
+            <option value="" disabled selected>Seleccione un cliente</option>
+            <option
+              th:each="cliente : ${clientes}"
+              th:value="${cliente.id}"
+              th:text="${cliente.nombre} + ' ' + ${cliente.apellido}"
+            ></option>
+          </select>
+        </div>
+
+        <!-- Dropdown para seleccionar Producto -->
+        <div class="mb-3">
+          <label for="producto" class="form-label">Producto</label>
+          <select
+            id="producto"
+            th:field="*{producto}"
+            class="form-control"
+            required
+          >
+            <option value="" disabled selected>Seleccione un producto</option>
+            <option
+              th:each="producto : ${productos}"
+              th:value="${producto.id}"
+              th:text="${producto.nombre}"
+            ></option>
+          </select>
+        </div>
+
+        <!-- Campo para ingresar Cantidad -->
+        <div class="mb-3">
+          <label for="cantidad" class="form-label">Cantidad</label>
+          <input
+            type="number"
+            id="cantidad"
+            th:field="*{cantidad}"
+            class="form-control"
+            placeholder="Cantidad"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          Editar Pedido
+        </button>
+      </form>
     </div>
 
     <footer class="text-center py-3 bg-dark text-white">
-        &copy; <span th:text="${año}"></span> Mi Biblioteca Virtual. Todos los derechos reservados.
+      &copy; <span th:text="${año}"></span> Mi Biblioteca Virtual. Todos los
+      derechos reservados.
     </footer>
-</body>
+  </body>
 </html>
-

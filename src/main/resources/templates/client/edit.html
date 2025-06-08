@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mi Biblioteca</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <header class="text-center py-3">
+      <a href="/" style="text-decoration: none; color: inherit">
+        <img
+          src="/img/icon/open-book.png"
+          alt="Icono de libro"
+          style="width: 50px"
+        />
+      </a>
+      <h1>Bienvenido a Mi Biblioteca Virtual</h1>
+    </header>
+
+    <!-- Contenedor del formulario centrado -->
+    <div
+      class="d-flex justify-content-center align-items-start mt-5"
+      style="height: calc(100vh - 150px)"
+    >
+      <form
+        method="post"
+        th:object="${cliente}"
+        th:action="@{/clientes/{id}(id=${cliente.id})}"
+        class="w-50 p-4 border rounded shadow"
+      >
+        <h2 class="text-center mb-4">Editar Persona</h2>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            th:field="*{nombre}"
+            placeholder="Escribe tu nombre"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input
+            type="text"
+            class="form-control"
+            id="apellido"
+            th:field="*{apellido}"
+            placeholder="Escribe tu apellido"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Guardar</button>
+      </form>
+    </div>
+
+    <footer class="text-center py-3 bg-dark text-white">
+      &copy; <span th:text="${año}"></span> Mi Biblioteca Virtual. Todos los
+      derechos reservados.
+    </footer>
+  </body>
+</html>

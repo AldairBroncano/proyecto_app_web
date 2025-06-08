@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Entity
-public class Persona extends DomainObject {
+public class Cliente extends DomainObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,11 @@ public class Persona extends DomainObject {
     String apellido;
     LocalDate fechaNacimiento;
 
-    public Persona(String nombre, String apellido) {
+    public Cliente(String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
     }
 
-    public Persona() {
+    public Cliente() {
     }
 }
